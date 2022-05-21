@@ -105,6 +105,7 @@ describe("Ballot", function () {
           await delegateTx.wait();
         }
       });
+      // BALLOT CONTRACT
 
       describe("when a ballot is created", async () => {
         beforeEach(async () => {
