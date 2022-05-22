@@ -19,6 +19,8 @@ function convertStringArrayToBytes32(array: string[]) {
   return bytes32Array;
 }
 
+
+
 describe("Ballot", function () {
   let ballotContract: CustomBallot;
   let ballotFactory: any;

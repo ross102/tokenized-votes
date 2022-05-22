@@ -1,9 +1,10 @@
 import * as dotenv from "dotenv";
-
 import { ethers } from "ethers";
 import fs from 'fs';
 import * as customBallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 import * as tokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
+import { CustomBallot, MyToken } from "../typechain";
+
 
 const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim(); 
 
@@ -38,11 +39,11 @@ async function main() {
   console.log("Deploying MyToken contract");
 
   //  Token deployment
-  const tokenFactory = new ethers.ContractFactory(
+  const tokenFactory  = new ethers.ContractFactory(
     tokenJson.abi,
     tokenJson.bytecode,
     signer
-  );
+  ) 
   const tokenContract = await tokenFactory.deploy()
   console.log("Awaiting confirmations");
   await tokenContract.deployed();
@@ -50,6 +51,7 @@ async function main() {
   console.log(`MyToken Contract is deployed at ${tokenContract.address}`);
   console.log("Deploying Custom ballot contract");
   console.log("Proposals: ");
+  //poposals
   const proposals = ["peter obi", "saraki", "osibanjo"]
   if (proposals.length < 2) throw new Error("Not enough proposals provided");
   proposals.forEach((element, index) => {
