@@ -39,7 +39,10 @@ contract CustomBallot {
         uint256 votingPowerAvailable = voteToken.getPastVotes(
             msg.sender,
             referenceBlock
-        ) - spentVotePower[msg.sender]; // TODO: Change this
+        ); 
+        // Todo - done
+         spentVotePower[msg.sender] = votingPowerAvailable;
+
         require(votingPowerAvailable >= amount, "Has not enough voting power");
         spentVotePower[msg.sender] += amount;
         proposals[proposal].voteCount += amount;
@@ -61,6 +64,8 @@ contract CustomBallot {
     }
 
     function votingPower() public view returns (uint256 _votingPower) {
-        //TODO: do this
+        //TODO: do this - done
+        _votingPower = spentVotePower[msg.sender];
+
     }
 }

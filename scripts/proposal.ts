@@ -8,14 +8,6 @@ import { CustomBallot } from "../typechain";
 
 
 const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim(); 
-
-function convertBytes32ToString(array: any) {
-    const stringArray = [];
-    for (let index = 0; index < array.length; index++) {
-        stringArray.push(ethers.utils.parseBytes32String(array[index]));
-    }
-    return stringArray;
-  }
   
 
 
@@ -36,7 +28,7 @@ async function main() {
      throw new Error("Not enough ether");
    }
    // ballot contract address
-   const ballotContract = "0xCF1C269B722196f081B036be48e4e6B1631aE7D8"
+   const ballotContract = "0x43F81d27d0E5Db45D6d980Cc0F08E4616834eE6D"
 
    // create contract instance   
    const customBallot: CustomBallot = new Contract(
@@ -46,10 +38,10 @@ async function main() {
 
    ) as CustomBallot
    //proposal array
-   const proposals = ["peter obi", "saraki", "osibanjo"]
+   const proposalsLength = 3
    let index = 0
    //Query proposals for each ballot
-   while (index < proposals.length) {
+   while (index < proposalsLength) {
     const ballotProposal = await customBallot.proposals(index)
    // convert bytes to string
     const byteToString = ethers.utils.parseBytes32String(ballotProposal.name)
