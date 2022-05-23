@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 interface IERC20Votes {
-    function getPastVotes(address, uint256)  external  returns (uint256);
+    function getPastVotes(address, uint256) external returns (uint256);
 }
 
 contract CustomBallot {
@@ -12,6 +12,8 @@ contract CustomBallot {
         uint256 weight,
         uint256 proposalVotes
     );
+
+    address public voter;
 
     struct Proposal {
         bytes32 name;
@@ -24,10 +26,7 @@ contract CustomBallot {
     IERC20Votes public voteToken;
     uint256 public referenceBlock;
 
-    constructor(
-        bytes32[] memory proposalNames,
-        address _voteToken
-    ) {
+    constructor(bytes32[] memory proposalNames, address _voteToken) {
         for (uint256 i = 0; i < proposalNames.length; i++) {
             proposals.push(Proposal({name: proposalNames[i], voteCount: 0}));
         }
@@ -36,12 +35,8 @@ contract CustomBallot {
     }
 
     function vote(uint256 proposal, uint256 amount) external {
-        uint256 votingPowerAvailable = voteToken.getPastVotes(
-            msg.sender,
-            referenceBlock
-        ); 
-        // Todo - done
-         spentVotePower[msg.sender] = votingPowerAvailable;
+        uint256 votingPowerAvailable = votingPower();  
+         // TODO: Change this
 
         require(votingPowerAvailable >= amount, "Has not enough voting power");
         spentVotePower[msg.sender] += amount;
@@ -63,9 +58,11 @@ contract CustomBallot {
         winnerName_ = proposals[winningProposal()].name;
     }
 
-    function votingPower() public view returns (uint256 _votingPower) {
-        //TODO: do this - done
-        _votingPower = spentVotePower[msg.sender];
-
+    function votingPower() public  returns (uint256 _votingPower) {
+        //TODO: do this
+        _votingPower = voteToken.getPastVotes(
+            msg.sender,
+            referenceBlock
+        ) - spentVotePower[msg.sender];
     }
 }

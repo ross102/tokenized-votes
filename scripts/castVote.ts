@@ -2,12 +2,15 @@ import * as dotenv from "dotenv";
 import { ethers, Contract } from "ethers";
 import fs from 'fs';
 import * as customBallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
-import { CustomBallot, MyToken } from "../typechain";
+import { CustomBallot } from "../typechain";
 
 
 dotenv.config();
 
 const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim();
+
+
+// vote
 
 async function main() {
     // create wallet signer
@@ -32,11 +35,16 @@ async function main() {
 
    ) as CustomBallot
    //address array
-//    const address = ["0x26175874485De9143f1a90146bedf851599d47f6",'0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097']
-   
+//    const address = ["0x26175874485De9143f1a90146bedf851599d47f6",
+// '0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097']
+
+// default amount to zero so it can vote
+   let amount = 0
     console.log('casting vote...');
-    const castVote = await ballotContract.vote(2, 1);
-     castVote.wait();
+    
+    const castVote = await ballotContract.vote(2, ethers.utils.parseEther(amount.toFixed(18)));
+    
+    castVote.wait();
     
          console.log(`transaction hash is ${castVote.hash}`); 
  

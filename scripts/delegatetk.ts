@@ -32,22 +32,24 @@ async function main() {
 
    ) as MyToken
    //address array
-   const address = ['0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097']
+   const address = ['0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097', 
+   "0xdd2fd4581271e230360230f9337d5c0430bf44c0", "0x26175874485De9143f1a90146bedf851599d47f6"]
    
     console.log('delegating..');
     const delegateTk = await tokenContract.delegate(
-        address[0]
+        address[2]
       );
       console.log('awaiting confirmation')
       await delegateTk.wait();
      console.log(`delegate hash is ${delegateTk.hash}`); 
-     console.log('checking for vote power');
+     console.log('checking for vote power..');
      const VotePower = await tokenContract.getVotes(
-         address[0]
+         address[2]
        );
-     // const formatVotePower = Number(ethers.utils.formatEther(VotePower))
-          console.log(`vote power is ${VotePower}`); 
- 
+     const formatVotePower = Number(ethers.utils.formatEther(VotePower))
+           
+          console.log(VotePower);
+          console.log(formatVotePower);
 }
  
  main().catch((error) => {

@@ -32,11 +32,12 @@ async function main() {
 
    ) as MyToken
    //address array
-   const address = ["0x26175874485De9143f1a90146bedf851599d47f6",'0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097']
+   const address = ["0xdd2fd4581271e230360230f9337d5c0430bf44c0",
+   '0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097', "0x26175874485De9143f1a90146bedf851599d47f6"]
    
     console.log('checking for vote power');
     const VotePower = await tokenContract.getVotes(
-        address[1]
+        address[2]
       );
     // const formatVotePower = Number(ethers.utils.formatEther(VotePower))
          console.log(`vote power is ${VotePower}`); 

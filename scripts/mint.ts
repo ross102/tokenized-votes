@@ -23,9 +23,9 @@ async function main() {
    const balance = await Number(ethers.utils.formatEther(balanceBN));
    console.log(`Wallet balance ${balance}`);
 
-//    if (balance < 0.0001) {
-//      throw new Error("Not enough ether");
-//    }
+   if (balance < 0.0001) {
+     throw new Error("Not enough ether");
+   }
    // token contract address
    const tokenContractAddress = "0xcd72856933A1aFb1B5B1FCBefdEce2bD24bBa99c"
 
@@ -38,14 +38,14 @@ async function main() {
    ) as MyToken
    //address array
    const address = ['0x1cbd3b2770909d4e10f157cabc84c7264073c9ec', '0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097',
-    "0x26175874485de9143f1a90146bedf851599d47f6"]
-   
+    "0xdd2fd4581271e230360230f9337d5c0430bf44c0", "0x26175874485De9143f1a90146bedf851599d47f6"]
+   let vote_power = 15
    
    
       console.log('minting...');
       const Mint = await tokenContract.mint(
-        address[1],
-        25
+        address[3],
+        ethers.utils.parseEther(vote_power.toFixed(18))
       );
      await  Mint.wait();
       console.log(`minting complete.`); 
