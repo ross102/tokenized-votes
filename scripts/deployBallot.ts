@@ -3,8 +3,8 @@ import { ethers } from "ethers";
 import fs from 'fs';
 import * as customBallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 import * as tokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
-import { CustomBallot, MyToken } from "../typechain";
 
+dotenv.config();
 
 const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim(); 
 
@@ -38,6 +38,8 @@ async function main() {
 
   console.log("Deploying MyToken contract");
 
+   const addr = await signer.getAddress();
+   console.log(addr);
   //  Token deployment
   const tokenFactory  = new ethers.ContractFactory(
     tokenJson.abi,

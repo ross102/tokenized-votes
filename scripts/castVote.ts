@@ -1,15 +1,16 @@
 import * as dotenv from "dotenv";
-
 import { ethers, Contract } from "ethers";
 import fs from 'fs';
 import * as customBallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
-
 import { CustomBallot } from "../typechain";
 
 
-const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim(); 
-  
+dotenv.config();
 
+const PRIVATE_KEY = fs.readFileSync(".secret").toString().trim();
+
+
+// vote
 
 async function main() {
     // create wallet signer
@@ -24,31 +25,28 @@ async function main() {
    const balance = await Number(ethers.utils.formatEther(balanceBN));
    console.log(`Wallet balance ${balance}`);
 
-   if (balance < 0.001) {
-     throw new Error("Not enough ether");
-   }
-   // ballot contract address
-   const ballotContract = "0x43F81d27d0E5Db45D6d980Cc0F08E4616834eE6D"
+   const ballotContractAddress = "0x43F81d27d0E5Db45D6d980Cc0F08E4616834eE6D"
 
-   // create contract instance   
-   const customBallot: CustomBallot = new Contract(
-       ballotContract,
-       customBallotJson.abi,
-       signer
+   // create ballot contract instance   
+   const ballotContract: CustomBallot = new Contract(
+    ballotContractAddress,
+    customBallotJson.abi,
+     signer
 
    ) as CustomBallot
-   //proposal array
-   const proposalsLength = 3
-   let index = 0
-   //Query proposals for each ballot
-   while (index < proposalsLength) {
-    const ballotProposal = await customBallot.proposals(index)
-   // convert bytes to string
-    const byteToString = ethers.utils.parseBytes32String(ballotProposal.name)
-    console.log(`proposal ${index} :  ${byteToString}`)
-    index ++;
-   }
-      
+   //address array
+//    const address = ["0x26175874485De9143f1a90146bedf851599d47f6",
+// '0xdf3e18d64bc6a983f673ab319ccae4f1a57c7097']
+
+// default amount to zero so it can vote
+   let amount = 0
+    console.log('casting vote...');
+    
+    const castVote = await ballotContract.vote(2, ethers.utils.parseEther(amount.toFixed(18)));
+    
+    castVote.wait();
+    
+         console.log(`transaction hash is ${castVote.hash}`); 
  
 }
  
@@ -56,4 +54,3 @@ async function main() {
    console.error(error);
    process.exitCode = 1;
  });
- 
